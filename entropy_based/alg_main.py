@@ -10,14 +10,23 @@ def cal_S(sl):  # 信息熵计算函数
     return -((sl / sl.sum()).apply(log) * sl / sl.sum()).sum()
 
 
-f = open('data.txt', 'r', encoding='GBK')  # 读取文章
+# f = open('data.txt', 'r', encoding='GBK')  # 读取文章
+f = open('../database/weiboText', 'r')  # 读取文章
 s = f.read()  # 读取为一个字符串
+
+# 读取停用词
+stop_words = []
+f1 = open('stop_words', 'r')
+for words in f1:
+    stop_words.append(words.replace('\n', ''))
+# print(stop_words)
 
 # 定义要去掉的标点字
 drop_dict = [u'，', u'\n', u'。', u'、', u'：', u'(', u')', u'[', u']', u'.', u',', u' ', u'\u3000', u'”', u'“', u'？', u'?',
              u'！', u'‘', u'’', u'…']
-for i in drop_dict:  # 去掉标点字
-    s = s.replace(i, '')
+drop_dict = drop_dict + stop_words
+for word in drop_dict:  # 去掉标点字
+    s = s.replace(word, '')
 
 # 为了方便调用，自定义了一个正则表达式的词典
 myre = {2: '(..)', 3: '(...)', 4: '(....)', 5: '(.....)', 6: '(......)', 7: '(.......)'}
